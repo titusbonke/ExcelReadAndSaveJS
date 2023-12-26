@@ -31,7 +31,7 @@
         });
 
         var a = [{ "Sno": 1, "Name": 9524864129, "Discount type": "Assigned to order total", "Use percentage": 0, "Discount amount": 10, "Start date": 44835, "End date": 44864, "Requires coupon code": 1, "Coupon code": "AAAAAABCD", "Discount limitation": "Unlimited", "N times": 1, "Requirements": "Rule1,Rule2" }, { "Sno": 2, "Name": 9840397985, "Discount type": "Assigned to order total", "Use percentage": 1, "Discount amount": 20, "Start date": 44836, "End date": 44864, "Requires coupon code": 1, "Coupon code": "AAAAAABCE", "Discount limitation": "N times only", "N times": 50, "Requirements": "Rule1" }, { "Sno": 3, "Name": 9524864129, "Discount type": "Assigned to order total", "Use percentage": 0, "Discount amount": 15, "Start date": 44837, "End date": 44864, "Requires coupon code": 1, "Coupon code": "AAAAAABCF", "Discount limitation": "N times per customer", "N times": 10, "Requirements": "Rule2" }];
-        console.log(a[0].Name);
+        console.log(a[0]["Discount type"]);
 
         // Add a button to trigger JSON to Excel conversion
         const convertButton = document.getElementById('button');
