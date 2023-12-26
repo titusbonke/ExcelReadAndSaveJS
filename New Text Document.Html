@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Excel to JSON Converter</title>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+    <input type="file" id="excelFileInput">
+    <button id="button">Convert and Save</button>
+    <div id="output"></div>
+    <script>
+        const excelFileInput = document.getElementById('excelFileInput');
+        const outputDiv = document.getElementById('output');
+        var jsonData="";
+        excelFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const data = new Uint8Array(event.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                 jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                outputDiv.textContent = JSON.stringify(jsonData, null, 2); // Pretty-print JSON
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+
+        var a = [{ "Sno": 1, "Name": 9524864129, "Discount type": "Assigned to order total", "Use percentage": 0, "Discount amount": 10, "Start date": 44835, "End date": 44864, "Requires coupon code": 1, "Coupon code": "AAAAAABCD", "Discount limitation": "Unlimited", "N times": 1, "Requirements": "Rule1,Rule2" }, { "Sno": 2, "Name": 9840397985, "Discount type": "Assigned to order total", "Use percentage": 1, "Discount amount": 20, "Start date": 44836, "End date": 44864, "Requires coupon code": 1, "Coupon code": "AAAAAABCE", "Discount limitation": "N times only", "N times": 50, "Requirements": "Rule1" }, { "Sno": 3, "Name": 9524864129, "Discount type": "Assigned to order total", "Use percentage": 0, "Discount amount": 15, "Start date": 44837, "End date": 44864, "Requires coupon code": 1, "Coupon code": "AAAAAABCF", "Discount limitation": "N times per customer", "N times": 10, "Requirements": "Rule2" }];
+        console.log(a[0].Name);
+
+        // Add a button to trigger JSON to Excel conversion
+        const convertButton = document.getElementById('button');
+
+        convertButton.addEventListener('click', () => {
+            const worksheet = XLSX.utils.json_to_sheet(jsonData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+            const excelBuffer = XLSX.write(workbook, { type: 'array', bookType: 'xlsx' });
+            const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'converted.xlsx'; // Set the desired filename
+            link.click();
+        });
+
+    </script>
+</body>
+
+</html>
